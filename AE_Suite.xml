@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+  <suite name="AE">
+  <!-- AE -->
+  <test name="AE Web Application Automation">
+  <classes>
+  		<class name="com.aurovind.automation.Z_TestCase.WebApp_Automation" />
+  </classes>
+  </test>
+  </suite>

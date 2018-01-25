@@ -1,0 +1,361 @@
+ <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.aurovind.AE</groupId>
+  <artifactId>OnlineAutomation</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>OnlineAutomation</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-resources-plugin</artifactId>
+              <version>2.7</version>
+            </plugin>           
+          <!-- </plugins>
+        </pluginManagement>   
+    </build> -->
+
+	<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <version>2.19.1</version>
+  <configuration>
+    <suiteXmlFiles>
+      <suiteXmlFile>${SuiteName}</suiteXmlFile>
+      </suiteXmlFiles>
+      <excludes>
+      	<exclude>${ExcludeTC}</exclude>
+      </excludes>
+      <properties>
+        <parallel>classes</parallel>
+        <threadcount>4</threadcount>
+        <property>
+        	<name>suitethreadpoolsize</name>
+        	<value>6</value>
+        </property>
+      	<property>
+      		<name>usedefaultlisteners</name>
+      		<value>true</value>
+      	</property>
+      	<property>
+        	<name>listener</name>
+        	<value>org.uncommons.reportng.HTMLReporter</value>
+      	</property>
+      </properties>
+      <outputDir>target/surefire-reports</outputDir>
+      <systemPropertyVariables>
+      	<org.uncommons.reportng.title>Gain Automation Reports</org.uncommons.reportng.title>
+      </systemPropertyVariables>
+      </configuration>
+      </plugin>
+      
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        <goals>
+        <goal>deploy-file</goal>
+        </goals>
+        <configuration>
+        	<repositoryId>internal-repository</repositoryId>
+        	<url>${project.distributionManagement.repository.url}</url>
+        	<artifactId>${TestType}</artifactId>
+        	<groupId>SureFire_Reports</groupId>
+        	<version>${buildNumber}</version>
+        	<generatePom>false</generatePom>
+        	<file>${basedir}/target/surefire-reports/emailable-report.html</file>
+        </configuration>
+        </plugin>
+        
+        <plugin>
+     <groupId>org.eclipse.m2e</groupId>
+     <artifactId>lifecycle-mapping</artifactId>
+     <version>1.0.0</version>
+     <configuration>
+       <lifecycleMappingMetadata>
+         <pluginExecutions>
+           <pluginExecution>
+             <pluginExecutionFilter>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-dependency-plugin</artifactId>
+               <versionRange>[2.8,)</versionRange>
+               <goals>
+                 <goal>unpack-dependencies</goal>
+               </goals>
+               </pluginExecutionFilter>
+             <action>
+               <ignore/>
+             </action>
+           </pluginExecution>
+           
+           <pluginExecution>
+           		<pluginExecutionFilter>
+           		  <groupId>org.apache.maven.plugins</groupId>
+           		  <artifactId>maven-antrun-plugin</artifactId>
+           		  <versionRange>[1.1,)</versionRange>
+           		  <goals>
+                 <goal>run</goal>
+               </goals>
+               </pluginExecutionFilter>
+               <action>
+               <ignore/>
+             </action>
+             </pluginExecution>
+             </pluginExecutions>
+             </lifecycleMappingMetadata>
+             </configuration>
+             </plugin>
+             
+             <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-dependency-plugin</artifactId>
+               <version>2.8</version>
+               <executions>
+                <execution>
+               		<id>unpack-drivers</id>
+               		<phase>compile</phase>
+               		<goals>
+               			<goal>unpack-dependencies</goal>
+               	 </goals>
+                  <configuration>
+                    <includeArtifactIds>chromedriver_win32,iedriverserver-x64</includeArtifactIds>	
+                    <includes>*.exe</includes>
+                    <type>zip</type>
+                  </configuration> 
+               </execution>
+             </executions>
+            </plugin>
+               <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-compiler-plugin</artifactId>
+               <version>3.5.1</version>
+               <configuration>
+               <source>1.8</source>
+               <target>1.8</target>
+               </configuration>
+               </plugin> 
+      </plugins>
+		</pluginManagement>
+		</build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-server</artifactId>
+    	<version>2.53.0</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.testng</groupId>
+    	<artifactId>testng</artifactId>
+    	<version>6.10</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-chrome-driver</artifactId>
+    	<version>2.48.0</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-server-standalone</artifactId>
+    	<version>2.37.0</version>
+    </dependency>
+    
+    
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-server-standalone</artifactId>
+    	<version>3.8.1</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>3.2.5.RELEASE</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>3.2.5.RELEASE</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.commons-csv</artifactId>
+      <version>1.0-r706900_3</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.9.5</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-ie-driver</artifactId>
+      <version>2.25.0</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.13</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>cn.guoyukun.jdbc</groupId>
+    <artifactId>oracle-ojdbc6</artifactId>
+    <version>11.2.0.3.0</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>cn.guoyukun.jdbc</groupId>
+      <artifactId>oracle-ojdbc6</artifactId>
+      <version>11.2.0.3.0</version>
+      <classifier>javadoc</classifier>
+    </dependency>
+    
+    <dependency>
+    <groupId>cn.guoyukun.jdbc</groupId>
+      <artifactId>oracle-ojdbc6</artifactId>
+      <version>11.2.0.3.0</version>
+      <classifier>sources</classifier>
+    </dependency>
+    
+    <dependency>
+    <groupId>com.oracle</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>11.2.0.4.0</version>    
+    </dependency>
+     
+    <!-- <dependency>
+    <groupId>sap.hana</groupId>
+      <artifactId>ngdbc.jar</artifactId>
+      <version>102.4</version>    
+    </dependency> -->
+    
+    <dependency>
+    <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>    
+    </dependency>
+    
+     <dependency>
+    <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.13</version>    
+    </dependency>
+    
+    <dependency>
+    <groupId>org.uncommons</groupId>
+      <artifactId>reportng</artifactId>
+      <version>1.1.4</version>    
+    </dependency>
+    
+    <dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>    
+    </dependency>
+    
+    <dependency>
+    <groupId>com.google.guice</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>    
+    </dependency>
+    
+    <dependency>
+    <groupId>JDBCDrivers.Informix</groupId>
+      <artifactId>ifxjdbc</artifactId>
+      <version>1.0</version>    
+    </dependency>
+    
+    <!-- <dependency>
+    <groupId>com.ibm.db2</groupId>
+      <artifactId>db2jcc-javax</artifactId>
+      <version>1.0</version>    
+    </dependency> -->
+    
+    <!-- <dependency>
+    <groupId>ibm.db2</groupId>
+      <artifactId>db2jcc</artifactId>
+      <version>1.6.0</version>    
+    </dependency>
+     -->
+     
+    <!--  <dependency>
+    <groupId>com.ibm.db2</groupId>
+      <artifactId>db2java</artifactId>
+      <version>1.0</version>    
+    </dependency> -->
+    
+    <!-- <dependency>
+    <groupId>ibm.db2</groupId>
+      <artifactId>db2jcc_javax</artifactId>
+      <version>1.6.0</version>    
+    </dependency> -->
+    
+    <!-- <dependency>
+    <groupId>ibm.db2</groupId>
+      <artifactId>db2jcc_licence_cisuz</artifactId>
+      <version>1.6.0</version>    
+    </dependency> -->
+    
+     <!-- <dependency>
+    <groupId>ibm.db2</groupId>
+      <artifactId>db2jcc_licence_cu</artifactId>
+      <version>1.6.0</version>    
+    </dependency>  -->
+    
+    <dependency>
+    <groupId>com.relevantcodes</groupId>
+      <artifactId>extentreports</artifactId>
+      <version>1.4</version>    
+    </dependency>
+    
+    <!-- <dependency>
+    <groupId>com.oracle</groupId>
+      <artifactId>ojdbc14dms</artifactId>
+      <version>10.2.0.1.0</version>    
+    </dependency> -->
+    
+    
+    
+    
+  </dependencies>
+</project>
+
+
